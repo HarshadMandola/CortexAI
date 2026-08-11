@@ -11,14 +11,17 @@ export const login=async (req,res)=>{
         let user= await User.findOne({
             firebaseUid:decoded.uid
         })
-
+        console.log(JSON.stringify(decoded, null, 2));
         if(!user){
             user=await User.create({
                 firebaseUid:decoded.uid,
-                name:decoded.displayName,
+                name:decoded.name,
                 email:decoded.email,
                 avatar:decoded.picture
             })
+        } else if (!user.name) {
+            user.name = decoded.name;
+            await user.save();
         }
         const sessionId=crypto.randomUUID()
         await redis.set(`session-${sessionId}`,

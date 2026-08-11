@@ -4,6 +4,9 @@ import { signInWithPopup } from 'firebase/auth'
 import { auth, googleProvider } from '../../utils/firebase.js'
 import { useDispatch, useSelector } from 'react-redux'
 import { setUserData } from '../redux/userSlice.js'
+import SideBar from '../components/SideBar.jsx'
+import CharArea from '../components/CharArea.jsx'
+import Artifact from '../components/Artifact.jsx'
 
 function Home() {
   const {userData}=useSelector(state=>state.user)
@@ -31,6 +34,12 @@ function Home() {
   }
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-950 via-black to-gray-900 flex items-center justify-center">
+
+    <SideBar/>
+    <CharArea/>
+    <Artifact/>
+
+
       {!userData && <div className="bg-gray-900 border border-gray-800 rounded-2xl p-10 shadow-2xl w-[400px] text-center">
     <h1 className="text-3xl font-bold text-white mb-2">
       Welcome to CortexAI

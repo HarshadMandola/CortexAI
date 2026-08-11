@@ -1,7 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit'
-import userReducer from "./userSlice"
+import userReducer from "./userSlice.js"
+import messageReducer from "./messageSlice.js"
+import conversationReducer from './conversationSlice.js'
 export default configureStore({
   reducer: {
-    user:userReducer
+    user:userReducer,
+    conversations:conversationReducer,
+    message:messageReducer
   },
 })

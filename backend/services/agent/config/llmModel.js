@@ -1,3 +1,6 @@
+import dotenv from "dotenv"
+dotenv.config()
+
 import { ChatGroq } from "@langchain/groq"
 import { ChatGoogleGenerativeAI } from "@langchain/google-genai"
 
@@ -6,6 +9,7 @@ const groq = new ChatGroq({
     temperature: 0,
     maxTokens: undefined,
     maxRetries: 2,
+    apiKey: process.env.GROQ_API_KEY,
     // other params...
 })
 
