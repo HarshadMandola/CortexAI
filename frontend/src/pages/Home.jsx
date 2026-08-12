@@ -6,7 +6,6 @@ import { useDispatch, useSelector } from 'react-redux'
 import { setUserData } from '../redux/userSlice.js'
 import SideBar from '../components/SideBar.jsx'
 import CharArea from '../components/CharArea.jsx'
-import Artifact from '../components/Artifact.jsx'
 
 function Home() {
   const {userData}=useSelector(state=>state.user)
@@ -33,35 +32,42 @@ function Home() {
       }
   }
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-950 via-black to-gray-900 flex items-center justify-center">
+    <div className="min-h-screen bg-[#111111] text-white">
+      {userData ? (
+        <div className="flex h-[100dvh] overflow-hidden">
+          <SideBar />
+          <main className="min-w-0 flex-1">
+            <CharArea />
+          </main>
+        </div>
+      ) : (
+        <div className="flex min-h-screen items-center justify-center bg-[radial-gradient(circle_at_top,_#1e3a8a_0%,_#111827_38%,_#09090b_78%)] px-5">
+          <div className="w-full max-w-md rounded-3xl border border-white/10 bg-[#171717]/90 p-8 text-center shadow-2xl shadow-blue-950/40 backdrop-blur sm:p-10">
+            <div className="mx-auto mb-6 flex h-14 w-14 items-center justify-center rounded-2xl bg-blue-600 text-2xl shadow-lg shadow-blue-600/30">
+              ✦
+            </div>
+            <h1 className="text-3xl font-bold tracking-tight text-white">
+              Welcome to CortexAI
+            </h1>
+            <p className="mt-3 text-gray-400">
+              Sign in to start a conversation.
+            </p>
 
-    <SideBar/>
-    <CharArea/>
-    <Artifact/>
-
-
-      {!userData && <div className="bg-gray-900 border border-gray-800 rounded-2xl p-10 shadow-2xl w-[400px] text-center">
-    <h1 className="text-3xl font-bold text-white mb-2">
-      Welcome to CortexAI
-    </h1>
-
-    <p className="text-gray-400 mb-8">
-      Sign in to continue
-    </p>
-
-    <button
-      onClick={googleLogin}
-      className="w-full flex items-center justify-center gap-3 bg-white text-gray-800 font-semibold py-3 rounded-xl shadow-md hover:bg-gray-100 hover:scale-[1.02] active:scale-95 transition-all duration-200"
-    >
-      <img
-        src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
-        alt="Google"
-        className="w-6 h-6"
-      />
-      Continue with Google
-    </button>
-  </div>}
-</div>
+            <button
+              onClick={googleLogin}
+              className="mt-8 flex w-full items-center justify-center gap-3 rounded-xl bg-white py-3 font-semibold text-gray-800 shadow-md transition hover:-translate-y-0.5 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-[#171717] active:translate-y-0"
+            >
+              <img
+                src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
+                alt="Google"
+                className="h-5 w-5"
+              />
+              Continue with Google
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
   )
 }
 

@@ -1,5 +1,6 @@
 import React from "react";
 import { Bot, User } from "lucide-react";
+import Markdown from 'react-markdown'
 
 function MessageBubble({ role, content }) {
   const isUser = role === "user";
@@ -34,7 +35,9 @@ function MessageBubble({ role, content }) {
               : "bg-[#2b2b2b] text-gray-100 rounded-bl-md border border-gray-700"
           }`}
         >
-          <p className="text-[15px] leading-7">{content}</p>
+          <Markdown>
+          {content}
+          </Markdown>
         </div>
       </div>
     </div>

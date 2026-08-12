@@ -2,7 +2,7 @@
 import api from "../../utils/axios"
 
 
-const getCurrentUser=async()=>{
+export const getCurrentUser=async()=>{
     
     try {
         const {data}= await api.get("/api/me")
@@ -15,4 +15,3 @@ const getCurrentUser=async()=>{
     }
 }
 
-export default getCurrentUser

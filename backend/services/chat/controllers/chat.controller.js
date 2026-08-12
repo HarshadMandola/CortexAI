@@ -9,6 +9,7 @@ export const createConversation=async(req, res )=>{
         const conversation=await Converstation.create({
             userId:userId
         })
+        console.log(`yele ${conversation}`)
         return res.status(200).json(conversation)
     } catch (error) {
         return res.status(500).json({message:`create conversation error ${error}`})
@@ -48,6 +49,9 @@ export const saveMessage=async(req ,res )=>{
 
     try {
         const {conversationId,role,content}=req.body
+        if (!conversationId || !role || !content) {
+            return res.status(400).json({message:"conversationId, role, and content are required"})
+        }
         const message= await Message.create({
             conversationId,
             content,

@@ -6,6 +6,7 @@ import {useDispatch, useSelector} from 'react-redux'
 import { getConversations } from '../features/getConversations'
 import { addConversation, setConversation, setSelectedConversation } from '../redux/conversationSlice'
 import { createConversation } from '../features/createConversation'
+import { getCurrentUser } from '../features/getCurrentUser'
 import logOut from '../features/logOut'
 import { setUserData } from '../redux/userSlice'
 function SideBar() {
@@ -14,24 +15,36 @@ function SideBar() {
   const {conversations,selectedConversation}=useSelector(state=>state.conversations)
   const {userData}=useSelector(state=>state.user)
   useEffect(()=>{
-    if (!userData?._id) return;
+    const loadUser=async()=>{
+      const user=await getCurrentUser()
+      if(user){
+        dispatch(setUserData(user))
+      }
+    }
+    loadUser()
     const getConv=async()=>{
       const data=await getConversations()
+      
+      if (!data) return
       dispatch(setConversation(data))
+      if (data.length > 0) {
+        dispatch(setSelectedConversation(data[0]))
+      }
     }
     getConv()
   },[userData?._id])
 
   const handleConversation=async()=>{
     const data=await createConversation()
+    if (!data) return
     dispatch(addConversation(data))
+    dispatch(setSelectedConversation(data))
   }
-  console.log(userData);
   return (
   <div
     className={`${
       collapse ? "w-20" : "w-72"
-    } h-screen bg-[#171717] text-white flex flex-col justify-between transition-all duration-300 border-r border-gray-800`}
+    } h-full shrink-0 bg-[#171717] text-white flex flex-col justify-between transition-all duration-300 border-r border-gray-800`}
   >
     {/* Top */}
     <div>

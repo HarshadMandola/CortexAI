@@ -11,15 +11,18 @@ function CharArea() {
   const dispatch=useDispatch()
   useEffect(()=>{
       const getMsg=async()=>{
-        if(!selectedConversation) return 
+        if(!selectedConversation) {
+          dispatch(setMessages([]))
+          return
+        }
 
-        const data=await getMessages(selectedConversation?._id)
+        const data=await getMessages(selectedConversation._id)
         dispatch(setMessages(data))
       }
       getMsg()
   },[selectedConversation])
   return (
-    <div>
+    <div className="flex h-full min-h-0 flex-col bg-[#212121]">
       <ChatNavbar/>
       <MessageList/>
       <ChatInput/>

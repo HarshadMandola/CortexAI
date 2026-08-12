@@ -15,12 +15,13 @@ function ChatInput() {
 
   const handleSendMessage = async () => {
     if (!value.trim()) return;
+    if (!selectedConversation?._id) return;
 
     const prompt = value.trim();
 
     const payload = {
       prompt,
-      conversationId: selectedConversation?._id,
+      conversationId: selectedConversation._id,
     };
 
     dispatch(
