@@ -27,6 +27,7 @@ export const getConversations=async(req, res )=>{
         }).sort({updatedAt:-1})
         return res.status(200).json(conversations)
     } catch (error) {
+        console.log(`getConversation ${error}`)
         return res.status(500).json({message:`get conversation error ${error}`})
     }
 }
@@ -40,6 +41,7 @@ export const updateConversation=async(req, res )=>{
         })
         return res.status(200).json(conversations)
     } catch (error) {
+        console.log(`update conversation ${error}`)
         return res.status(500).json({message:`update conversation error ${error}`})
     }
 }
@@ -48,14 +50,15 @@ export const updateConversation=async(req, res )=>{
 export const saveMessage=async(req ,res )=>{
 
     try {
-        const {conversationId,role,content}=req.body
+        const {conversationId,role,content,images}=req.body
         if (!conversationId || !role || !content) {
             return res.status(400).json({message:"conversationId, role, and content are required"})
         }
         const message= await Message.create({
             conversationId,
             content,
-            role
+            role,
+            images
         })
         return res.status(200).json(message)
     } catch (error) {

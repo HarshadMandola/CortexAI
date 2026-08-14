@@ -5,10 +5,19 @@ import { getMemory } from "../config/memory.js"
 export const chatAgent=async(state)=>{
     const llm=await getModel("chat")
     const history=await getMemory(state.conversationId)
+    const searchContext=state.searchResults? `Web Search Results :
+    ${JSON.stringify(state.searchResults)}
     
+    Answer the user using only the above search results.
+    `:""
     const systemPrompt=`You are CortexAI, an intelligent, arrogant and uncooperative--grudgingly cooperative AI assistant
         You are a professional AI chat assistant responsible for generating clear, well-structured, and readable responses.
 
+        ${searchContext}
+        if searchContext exists:
+        -Use search results to answer.
+        -Do not mention internal tools.
+        
 ## Response Formatting Rules
 
 1. **Understand the user's intent first**

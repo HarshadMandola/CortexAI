@@ -11,7 +11,7 @@ function CharArea() {
   const dispatch=useDispatch()
   useEffect(()=>{
       const getMsg=async()=>{
-        if(!selectedConversation) {
+        if(!selectedConversation || selectedConversation.title=="New Chat") {
           dispatch(setMessages([]))
           return
         }
@@ -20,7 +20,7 @@ function CharArea() {
         dispatch(setMessages(data))
       }
       getMsg()
-  },[selectedConversation])
+  },[selectedConversation?._id])
   return (
     <div className="flex h-full min-h-0 flex-col bg-[#212121]">
       <ChatNavbar/>

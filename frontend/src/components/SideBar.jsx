@@ -34,12 +34,7 @@ function SideBar() {
     getConv()
   },[userData?._id])
 
-  const handleConversation=async()=>{
-    const data=await createConversation()
-    if (!data) return
-    dispatch(addConversation(data))
-    dispatch(setSelectedConversation(data))
-  }
+ 
   return (
   <div
     className={`${
@@ -65,7 +60,7 @@ function SideBar() {
 
         {!collapse && (
           <button
-            onClick={handleConversation}
+            onClick={()=>dispatch(setSelectedConversation(null))}
             className="p-2 rounded-lg hover:bg-gray-800 transition"
           >
             <PenBoxIcon size={20} />
@@ -77,7 +72,7 @@ function SideBar() {
       {!collapse && (
         <div className="p-4">
           <button
-            onClick={handleConversation}
+            onClick={()=>dispatch(setSelectedConversation(null))}
             className="w-full flex items-center gap-3 bg-gray-800 hover:bg-gray-700 px-4 py-3 rounded-xl transition"
           >
             <Plus size={18} />

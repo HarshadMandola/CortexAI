@@ -18,7 +18,7 @@ export const addMessages=async(conversationId,role,content)=>{
     const rawmessages=await redis.get(key)
     const messages=rawmessages?JSON.parse(rawmessages):[]
 
-    
+     
     messages.push({role,content})
 
     if(messages.length>20){
