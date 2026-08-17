@@ -50,7 +50,7 @@ export const updateConversation=async(req, res )=>{
 export const saveMessage=async(req ,res )=>{
 
     try {
-        const {conversationId,role,content,images}=req.body
+        const {conversationId,role,content,images,artifact}=req.body
         if (!conversationId || !role || !content) {
             return res.status(400).json({message:"conversationId, role, and content are required"})
         }
@@ -58,7 +58,8 @@ export const saveMessage=async(req ,res )=>{
             conversationId,
             content,
             role,
-            images
+            images,
+            artifact
         })
         return res.status(200).json(message)
     } catch (error) {

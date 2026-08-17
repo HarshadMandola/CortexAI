@@ -1,6 +1,5 @@
-import React from "react";
 import { useSelector } from "react-redux";
-import { Sparkles } from "lucide-react";
+import { Bot, Sparkles } from "lucide-react";
 import MessageBubble from "./MessageBubble";
 
 function MessageList() {
@@ -8,11 +7,11 @@ function MessageList() {
     (state) => state.conversations
   );
 
-  const { messages } = useSelector((state) => state.message);
+  const { messages, isLoading } = useSelector((state) => state.message);
 
   return (
     <div className="flex-1 overflow-y-auto bg-[#212121] px-6 py-8">
-      {!selectedConversation || messages?.length === 0 ? (
+      {!selectedConversation || (messages?.length === 0 && !isLoading) ? (
         <div className="h-full flex flex-col items-center justify-center text-center">
           <div className="w-20 h-20 rounded-full bg-blue-600 flex items-center justify-center mb-6 shadow-lg">
             <Sparkles className="w-10 h-10 text-white" />
@@ -40,6 +39,19 @@ function MessageList() {
                     images={msg.images}
                 />
             ))}
+          {isLoading && (
+            <div className="flex items-start gap-3" aria-live="polite" aria-label="CortexAI is thinking">
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gray-700 text-gray-200">
+                <Bot size={18} />
+              </div>
+              <div className="flex items-center gap-1.5 rounded-2xl rounded-bl-md border border-gray-700 bg-[#2b2b2b] px-4 py-4">
+                <span className="h-2 w-2 animate-bounce rounded-full bg-blue-400 [animation-delay:-0.3s]" />
+                <span className="h-2 w-2 animate-bounce rounded-full bg-blue-400 [animation-delay:-0.15s]" />
+                <span className="h-2 w-2 animate-bounce rounded-full bg-blue-400" />
+                <span className="ml-2 text-sm text-gray-400">CortexAI is thinking</span>
+              </div>
+            </div>
+          )}
         </div>
       )}
     </div>

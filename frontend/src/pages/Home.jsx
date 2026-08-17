@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { setUserData } from '../redux/userSlice.js'
 import SideBar from '../components/SideBar.jsx'
 import CharArea from '../components/CharArea.jsx'
+import Artifact from '../components/Artifact.jsx'
 
 function Home() {
   const {userData}=useSelector(state=>state.user)
@@ -39,6 +40,7 @@ function Home() {
           <main className="min-w-0 flex-1">
             <CharArea />
           </main>
+          <Artifact />
         </div>
       ) : (
         <div className="flex min-h-screen items-center justify-center bg-[radial-gradient(circle_at_top,_#1e3a8a_0%,_#111827_38%,_#09090b_78%)] px-5">

@@ -1,11 +1,12 @@
 import { Mic, Paperclip, Send } from "lucide-react";
-import React, { useState } from "react";
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import sendMessages from "../features/sendMessages";
-import { addMessage } from "../redux/messageSlice";
+import { addMessage, setLoading } from "../redux/messageSlice";
 import { createConversation } from "../features/createConversation";
 import { setSelectedConversation, updateConversationTitle } from "../redux/conversationSlice";
 import { updateConversation } from "../features/updateConversation";
+import { setArtifact } from "../redux/artifactSlice";
 
 function ChatInput() {
   const [value, setValue] = useState("");
@@ -13,25 +14,29 @@ function ChatInput() {
   const { selectedConversation } = useSelector(
     (state) => state.conversations
   );
+  const { isLoading } = useSelector((state) => state.message);
 
   const dispatch = useDispatch();
 
   const handleSendMessage = async () => {
     if (!value.trim()) return;
-    if (!selectedConversation?._id){
+    let conversation=selectedConversation
+    if (!conversation?._id){
       const conv=await createConversation()
       dispatch(setSelectedConversation(conv))
+      conversation=conv
     }
+    if (!conversation?._id) return
     const prompt = value.trim();
-    if(selectedConversation.title=="New Chat"){
-        await updateConversation({id:selectedConversation._id,title:prompt})
-        dispatch(updateConversationTitle({conversationId:selectedConversation._id,title:prompt}))
+    if(conversation.title=="New Chat"){
+        await updateConversation({id:conversation._id,title:prompt})
+        dispatch(updateConversationTitle({conversationId:conversation._id,title:prompt}))
     }
 
 
     const payload = {
       prompt,
-      conversationId: selectedConversation._id,
+      conversationId: conversation._id,
     };
 
     dispatch(
@@ -42,16 +47,25 @@ function ChatInput() {
     );
 
     setValue("");
+    dispatch(setLoading(true));
 
-    const data = await sendMessages(payload);
+    try {
+      const data = await sendMessages(payload);
 
-    dispatch(
-      addMessage({
-        role: "assistant",
-        content: data?.answer || "I couldn't generate a response. Please try again.",
-        images: data?.images || [],
-      })
-    );
+      if (data?.artifact) {
+        dispatch(setArtifact(data.artifact))
+      }
+
+      dispatch(
+        addMessage({
+          role: "assistant",
+          content: data?.answer || "I couldn't generate a response. Please try again.",
+          images: data?.images || [],
+        })
+      );
+    } finally {
+      dispatch(setLoading(false));
+    }
   };
 
   return (
@@ -77,10 +91,10 @@ function ChatInput() {
           </div>
 
           <button
-            disabled={!value.trim()}
+            disabled={!value.trim() || isLoading}
             onClick={handleSendMessage}
             className={`p-3 rounded-full transition ${
-              value.trim()
+              value.trim() && !isLoading
                 ? "bg-blue-600 hover:bg-blue-700 text-white"
                 : "bg-gray-700 text-gray-500 cursor-not-allowed"
             }`}
